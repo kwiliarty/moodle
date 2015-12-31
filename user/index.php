@@ -224,7 +224,9 @@ if ($mycourses = enrol_get_my_courses()) {
     $controlstable->data[0]->cells[] = $OUTPUT->render($select);
 }
 
-$controlstable->data[0]->cells[] = groups_print_course_menu($course, $baseurl->out(), true);
+if ($groupmenu = groups_print_course_menu($course, $baseurl->out(), true)) {
+    $controlstable->data[0]->cells[] = $groupmenu;
+}
 
 if (!isset($hiddenfields['lastaccess'])) {
     // Get minimum lastaccess for this course and display a dropbox to filter by lastaccess going back this far.
@@ -491,8 +493,8 @@ $userlist = $DB->get_recordset_sql("$select $from $where $sort", $params, $table
 // If there are multiple Roles in the course, then show a drop down menu for switching.
 if (count($rolenames) > 1) {
     echo '<div class="rolesform">';
-    echo '<label for="rolesform_jump">'.get_string('currentrole', 'role').'&nbsp;</label>';
-    echo $OUTPUT->single_select($rolenamesurl, 'roleid', $rolenames, $roleid, null, 'rolesform');
+    echo $OUTPUT->single_select($rolenamesurl, 'roleid', $rolenames, $roleid, null,
+        'rolesform', array('label' => get_string('currentrole', 'role')));
     echo '</div>';
 
 } else if (count($rolenames) == 1) {

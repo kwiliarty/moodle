@@ -1049,9 +1049,8 @@ table#categoryquestions {
         page-break-inside: avoid;
     }
 }
-
 /* Ajustments for mobile devices */
-@media only screen and (max-width:500px) {
+@media only screen and (max-width:565px) {
     #page-mod-quiz-edit .rpcontainerclass {
         margin-top: 3em;
     }

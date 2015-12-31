@@ -840,7 +840,15 @@ function scorm_get_all_attempts($scormid, $userid) {
     return $attemptids;
 }
 
-function scorm_view_display ($user, $scorm, $action, $cm) {
+/**
+ * Displays the entry form and toc if required.
+ *
+ * @param  stdClass $user   user object
+ * @param  stdClass $scorm  scorm object
+ * @param  string   $action base URL for the organizations select box
+ * @param  stdClass $cm     course module object
+ */
+function scorm_print_launch ($user, $scorm, $action, $cm) {
     global $CFG, $DB, $PAGE, $OUTPUT, $COURSE;
 
     if ($scorm->updatefreq == SCORM_UPDATE_EVERYTIME) {
@@ -2024,6 +2032,7 @@ function scorm_check_launchable_sco($scorm, $scoid) {
  * @param  boolean $checkviewreportcap Check the scorm:viewreport cap
  * @param  stdClass  $context          Module context, required if $checkviewreportcap is set to true
  * @return array                       status (available or not and possible warnings)
+ * @since  Moodle 3.0
  */
 function scorm_get_availability_status($scorm, $checkviewreportcap = false, $context = null) {
     $open = true;
@@ -2063,6 +2072,7 @@ function scorm_get_availability_status($scorm, $checkviewreportcap = false, $con
  * @param  boolean $checkviewreportcap Check the scorm:viewreport cap
  * @param  stdClass  $context          Module context, required if $checkviewreportcap is set to true
  * @throws moodle_exception
+ * @since  Moodle 3.0
  */
 function scorm_require_available($scorm, $checkviewreportcap = false, $context = null) {
 
