@@ -27,13 +27,16 @@ env:
     # Postgres is significantly is pretty reasonable in its run-time.
 
     # Run unit tests on MySQL
-    - DB=mysqli   PHPUNIT=true    INSTALL=false   CITEST=false
+    - DB=mysqli   PHPUNIT=true     BEHAT=false   INSTALL=false    CITEST=false
 
     # Run CI Tests without running PHPUnit.
-    - DB=none     PHPUNIT=false   INSTALL=false   CITEST=true
+    - DB=none     PHPUNIT=false    BEHAT=false   INSTALL=false    CITEST=true
 
     # Run unit tests on Postgres
-    - DB=pgsql    PHPUNIT=true    INSTALL=false   CITEST=false
+    - DB=pgsql    PHPUNIT=true     BEHAT=false   INSTALL=false    CITEST=false
+
+    # Run acceptance tests on Postgres
+    - DB=pgsql    PHPUNIT=false    BEHAT=true    INSTALL=false    CITEST=false 
 
 matrix:
     # Enable fast finish.
@@ -68,7 +71,7 @@ install:
 
 before_script:
     - >
-      if [ "$INSTALL" = 'true' -o "$PHPUNIT" = 'true' ];
+      if [ "$INSTALL" = 'true' -o "$PHPUNIT" = 'true' -o "$BEHAT" = 'true' ];
       then
         # Copy generic configuration in place.
         cp config-dist.php config.php ;
@@ -125,6 +128,31 @@ before_script:
           # Initialise PHPUnit for Moodle.
           php admin/tool/phpunit/cli/init.php
         fi
+
+        if [ "$BEHAT" = 'true' ]
+        then
+          # start xvfb
+          export DISPLAY=:99.0
+          sh -e /etc/init.d/xvfb start
+          sleep 3
+
+          # Create a directory for the behat database
+          mkdir -p "$HOME"/roots/behat
+
+          # The behat dataroot, prefix and wwwroot
+          sed -i \
+            -e "/require_once/i \\\$CFG->behat_dataroot = '\/home\/travis\/roots\/behat';" \
+            -e "/require_once/i \\\$CFG->behat_prefix = 'b_';" \
+            -e "/require_once/i \\\$CFG->behat_wwwroot = 'http://localhost:8000';" \
+            config.php ;
+
+          # Get and launch selenium
+          wget http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar;
+          (java -jar selenium-server-standalone-2.45.0.jar &) 2> /dev/null > /dev/null;
+
+          # Initialise Behat for Moodle.
+          php admin/tool/behat/cli/init.php
+        fi
       fi
 
 script:
@@ -135,6 +163,16 @@ script:
       if [ "$PHPUNIT" = 'true' ];
       then
         vendor/bin/phpunit;
+      fi
+
+    ########################################################################
+    # Behat
+    ########################################################################
+    - >
+      if [ "$BEHAT" = 'true' ];
+      then
+        (php -S localhost:8000 &) 2> /dev/null > /dev/null;
+        vendor/bin/behat --config /home/travis/roots/behat/behat/behat.yml --tags @local_lae;
       fi
 
     ########################################################################
