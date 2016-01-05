@@ -4304,6 +4304,8 @@ function forum_add_new_post($post, $mform, $unused = null) {
 
     if((isset($post->anonymous) && $post->anonymous) || ($forum->anonymous == FORUM_ANONYMOUS_ALWAYS)) {
         $post = forum_scrub_userid($post);
+    } else {
+        $post->hiddenuserid = '';
     }
 
     $post->id = $DB->insert_record("forum_posts", $post);
