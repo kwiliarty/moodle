@@ -211,3 +211,7 @@ script:
       then
         bash local/ci/php_lint/php_lint.sh;
       fi
+
+branches:
+  except:
+    - /.*PACKAGE.*/
