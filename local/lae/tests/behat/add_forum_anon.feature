@@ -19,11 +19,7 @@ Feature: Add an anonymous forum
       | student1  | C1      | student         |
       | student2  | C1      | student         |
     And I log in as "admin"
-    And I am on site homepage
-    And I expand "Site administration" node
-    And I expand "Plugins" node
-    And I expand "Activity modules" node
-    And I follow "Forum"
+    And I navigate to "Forum" node in "Site administration > Plugins > Activity modules"
     And I set the following fields to these values:
       | Post anonymously | 1 |
     And I press "Save changes"
