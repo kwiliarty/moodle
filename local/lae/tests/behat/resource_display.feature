@@ -15,7 +15,7 @@ Feature: Set a resource display preference at the course level
       | user    | course   | role           |
       | teacher | C1 | editingteacher |
     And the following config values are set as admin:
-      | displayoptions | 0,1,2,3,4,5,6 | C1 |
+      | displayoptions | 0,1,2,3,4,5,6 | resource |
     And I log in as "teacher"
     And I follow "Course 1"
 
