@@ -13,7 +13,7 @@ Feature: Set a resource display preference at the course level
       | Course 1 | C1        |
     And the following "course enrolments" exist:
       | user    | course   | role           |
-      | teacher | D1 | editingteacher |
+      | teacher | C1 | editingteacher |
     And the following config values are set as admin:
       | displayoptions | 0,1,2,3,4,5,6 | C1 |
     And I log in as "teacher"
