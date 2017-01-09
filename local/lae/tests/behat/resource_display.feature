@@ -10,18 +10,19 @@ Feature: Set a resource display preference at the course level
       | teacher  |
     And the following "courses" exist:
       | fullname | shortname |
-      | Resource | resource  |
+      | Course 1 | C1        |
     And the following "course enrolments" exist:
       | user    | course   | role           |
       | teacher | resource | editingteacher |
     And the following config values are set as admin:
       | displayoptions | 0,1,2,3,4,5,6 | resource |
     And I log in as "teacher"
-    And I navigate to "Edit settings" node in "Site administration > Resource"
+    And I follow "Course 1"
 
   @javascript
   Scenario Outline: Setting the default will cause future uploads to have the expected display type
-    Given I expand all fieldsets
+    Given I navigate to "Edit settings" node in "Course administration"
+    And I expand all fieldsets
     And I set the following fields to these values:
       | filedisplaydefault | <displaytype> |
     And I press "Save and display"
