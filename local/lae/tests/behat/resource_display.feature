@@ -27,6 +27,7 @@ Feature: Set a resource display preference at the course level
       | filedisplaydefault | <displaytype> |
     And I press "Save and display"
     And I turn editing mode on
+    And I wait until the page is ready
     And I add a "File" to section "1"
     When I expand all fieldsets
     Then I should see "<displaytype>" in the "#id_display" "css_element"
