@@ -9,12 +9,6 @@ if (has_capability('moodle/grade:manage', $systemcontext)
     $display_types = array(GRADE_DISPLAY_TYPE_REAL => new lang_string('real', 'grades'),
                            GRADE_DISPLAY_TYPE_PERCENTAGE => new lang_string('percentage', 'grades'),
                            GRADE_DISPLAY_TYPE_LETTER => new lang_string('letter', 'grades'),
-                           GRADE_DISPLAY_TYPE_REAL_PERCENTAGE => new lang_string('realpercentage', 'grades'),
-                           GRADE_DISPLAY_TYPE_REAL_LETTER => new lang_string('realletter', 'grades'),
-                           GRADE_DISPLAY_TYPE_LETTER_REAL => new lang_string('letterreal', 'grades'),
-                           GRADE_DISPLAY_TYPE_LETTER_PERCENTAGE => new lang_string('letterpercentage', 'grades'),
-                           GRADE_DISPLAY_TYPE_PERCENTAGE_LETTER => new lang_string('percentageletter', 'grades'),
-                           GRADE_DISPLAY_TYPE_PERCENTAGE_REAL => new lang_string('percentagereal', 'grades')
                            );
     asort($display_types);
 
@@ -42,8 +36,9 @@ if (has_capability('moodle/grade:manage', $systemcontext)
         // enable publishing in exports/imports
         $temp->add(new admin_setting_configcheckbox('gradepublishing', new lang_string('gradepublishing', 'grades'), new lang_string('gradepublishing_help', 'grades'), 0));
 
-        $temp->add(new admin_setting_configselect('grade_export_displaytype', new lang_string('gradeexportdisplaytype', 'grades'),
-                                                  new lang_string('gradeexportdisplaytype_desc', 'grades'), GRADE_DISPLAY_TYPE_REAL, $display_types));
+        $temp->add(new admin_setting_configmulticheckbox('grade_export_displaytype', new lang_string('gradeexportdisplaytype', 'grades'),
+                                new lang_string('gradeexportdisplaytype_desc', 'grades'),
+                                array(GRADE_DISPLAY_TYPE_REAL => new lang_string('real', 'grades')), $display_types));
 
         $temp->add(new admin_setting_configselect('grade_export_decimalpoints', new lang_string('gradeexportdecimalpoints', 'grades'),
                                                   new lang_string('gradeexportdecimalpoints_desc', 'grades'), 2,

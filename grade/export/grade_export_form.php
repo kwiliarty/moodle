@@ -129,9 +129,10 @@ class grade_export_form extends moodleform {
             $checkboxes[] = $mform->createElement('advcheckbox', 'display[percentage]', null, get_string('percentage', 'grades'), null, array(0, GRADE_DISPLAY_TYPE_PERCENTAGE));
             $checkboxes[] = $mform->createElement('advcheckbox', 'display[letter]', null, get_string('letter', 'grades'), null, array(0, GRADE_DISPLAY_TYPE_LETTER));
             $mform->addGroup($checkboxes, 'displaytypes', get_string('gradeexportdisplaytypes', 'grades'), ' ', false);
-            $mform->setDefault('display[real]', $CFG->grade_export_displaytype == GRADE_DISPLAY_TYPE_REAL);
-            $mform->setDefault('display[percentage]', $CFG->grade_export_displaytype == GRADE_DISPLAY_TYPE_PERCENTAGE);
-            $mform->setDefault('display[letter]', $CFG->grade_export_displaytype == GRADE_DISPLAY_TYPE_LETTER);
+            $defaulttypes = explode(',', $CFG->grade_export_displaytype);
+            $mform->setDefault('display[real]', in_array(GRADE_DISPLAY_TYPE_REAL, $defaulttypes));
+            $mform->setDefault('display[percentage]', in_array(GRADE_DISPLAY_TYPE_PERCENTAGE, $defaulttypes));
+            $mform->setDefault('display[letter]', in_array(GRADE_DISPLAY_TYPE_LETTER, $defaulttypes));
         } else {
             // Only used by XML grade export format.
             $mform->addElement('select', 'display', get_string('gradeexportdisplaytype', 'grades'), $options);
